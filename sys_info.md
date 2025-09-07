@@ -130,3 +130,65 @@ CREATE TABLE Users (
 I wanted to implement this system as I mentioned before with as required with considerable source code files.
 - Design a system using PHP,HTML,CSS(Bootstrap) and JS. for me i installed wampserver for local deployment.
 - also implement signin/up mechanism where users can login or register. admins also should register as a user then his role can be changed in database.
+
+Role-Based Functionalities in the Vendor Management System The VMS is designed to manage vendor relationships, product catalogs, and purchase orders in a manufacturing company. Users and Admins will interact with these entities, but their permissions differ to ensure security, accountability, and operational efficiency. Below is a breakdown of what each role can do, considering the system’s goals of organization and efficiency. 
+### Users (Role: 'User') Regular users, such as procurement staff or team members, are typically responsible for operational tasks like placing orders and viewing data. Their permissions are restricted to prevent unauthorized changes to critical data.
+
+1. View Vendor Information:
+
+Access a list of vendors with details like Name, ContactInfo, and Email. Search or filter vendors by name or other criteria. Example: A user can check contact details to reach out to a vendor for inquiries.
+
+2. View Products Supplied by Vendors:
+
+View the product catalog, including ProductID, Name, Price, and associated VendorID. Filter products by vendor or price range to identify suitable items. Example: A user can see all products supplied by “ABC Supplies” to plan a purchase.
+
+3. Place New Purchase Orders:
+
+Create a new purchase order by selecting a vendor and products from their catalog. Input quantities, calculate the TotalAmount based on product prices, and set the OrderDate (typically the current date). View their own submitted orders but cannot modify or delete them once confirmed. Example: A user places an order for 10 units of “Widget A” from a vendor, generating a new PurchaseOrderID.
+
+4. Track Purchase Orders:
+
+View a list of purchase orders they created, including PurchaseOrderID, VendorID, OrderDate, and TotalAmount. Filter orders by date or vendor to monitor order status (e.g., pending, fulfilled). Example: A user checks the status of all orders placed in the last month.
+
+5. Profile Management:
+
+View and update their own profile details (e.g., Email, but not Username or Role). Change their password securely. Example: A user updates their email address for notifications.
+
+6. Restrictions for Users:
+
+Cannot add, edit, or delete vendors or products. Cannot modify or delete purchase orders created by others or after confirmation. Cannot view or manage user accounts (e.g., no access to the Users table except their own record). Limited to read-only access for most data outside their direct responsibilities.
+
+### Admins (Role: 'Admin') Admins, such as procurement managers or system administrators, have full control over the system to manage data, users, and configurations. Their permissions include all User capabilities plus additional administrative functions.
+
+1. All User Permissions:
+
+Admins can perform all actions available to Users, such as viewing vendors, products, and purchase orders, placing orders, and tracking them. Example: An admin can place a purchase order or view products from a specific vendor, just like a User.
+
+2. Manage Vendors:
+
+Create: Add new vendors with details like Name, ContactInfo, and Email. Update: Modify existing vendor information (e.g., update contact details). Delete: Remove vendors, but only if no products or purchase orders are linked (due to foreign key constraints with ON DELETE RESTRICT). Example: An admin adds a new vendor, “XYZ Corp,” with their email and phone number.
+
+3. Manage Products:
+
+Create: Add new products to the catalog, specifying Name, Price, and VendorID. Update: Modify product details, such as updating the price of an existing product. Delete: Remove products, but only if not linked to any purchase orders (if you extend the schema to track order items). Example: An admin updates the price of “Widget A” to reflect a supplier’s new pricing.
+
+4. Manage Purchase Orders:
+
+View all purchase orders, regardless of who created them. Update order details, such as correcting the TotalAmount or changing the status (if status tracking is implemented). Delete or cancel orders, subject to business rules (e.g., only pending orders). Approve or reject orders if an approval workflow is implemented. Example: An admin cancels an erroneous order placed by a user.
+
+5. User Management:
+
+Create: Add new users (sign-up functionality for new staff, setting Username, Email, Password, and Role). Update: Modify user details, including changing their Role (e.g., promote a User to Admin). Delete: Remove user accounts, ensuring no critical dependencies exist. Reset Passwords: Facilitate password resets for users (e.g., via email or manual reset). Example: An admin creates an account for a new procurement team member with the User role.
+
+6. System-Wide Reporting and Analytics:
+
+Generate reports, such as total spend per vendor, top products by order volume, or order trends over time. Export data (e.g., CSV files) for external analysis. Example: An admin generates a report showing all purchase orders for a specific vendor in 2025.
+
+7. System Configuration:
+
+Configure system settings, such as email templates for vendor notifications or order status options (if implemented). Manage database backups or other administrative tasks in phpMyAdmin. Example: An admin sets up automated email notifications for new purchase orders.
+
+8. Additional Admin Powers:
+
+Full access to all data in the Vendors, Products, PurchaseOrders, and Users tables. Ability to override restrictions, such as editing locked orders or accessing restricted reports. Responsibility for ensuring data integrity and system security.
+
