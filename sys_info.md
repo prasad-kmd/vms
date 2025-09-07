@@ -115,7 +115,18 @@ CREATE TABLE purchase_orders (
     TotalAmount DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (VendorID) REFERENCES vendors(VendorID) ON DELETE RESTRICT
 )ENGINE=INNODB;
+
+-- Create Users table for sign-in and sign-up
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY AUTO_INCREMENT,
+    Username VARCHAR(50) NOT NULL UNIQUE,
+    Password VARCHAR(255) NOT NULL, -- Store hashed passwords
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    Role ENUM('Admin', 'User') DEFAULT 'User' NOT NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)ENGINE=INNODB;
 ```
 
 I wanted to implement this system as I mentioned before with minimum number of source code files.
 - Design a system using PHP,HTML,CSS(Bootstrap) and JS. for me i installed wampserver for local deployment.
+- also implement signin/up mechanism where users can login or register. admins also should register as a user then his role can be changed in database.
