@@ -118,3 +118,4 @@ CREATE TABLE purchase_orders (
 ```
 
 I wanted to implement this system as I mentioned before with minimum number of source code files.
+- Design a system using PHP,HTML,CSS(Bootstrap) and JS. for me i installed wampserver for local deployment.
