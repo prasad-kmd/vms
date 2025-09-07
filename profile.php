@@ -148,7 +148,7 @@ include 'includes/header.php';
                 <label>Email Address</label>
                 <input type="email" name="email" class="form-control" value="<?php echo htmlspecialchars($email); ?>">
             </div>
-            <button type="submit" class="btn btn-primary">Update Email</button>
+                    <button type="submit" class="btn btn-primary mt-4">Update Email</button>
         </form>
     </div>
 </div>
@@ -173,7 +173,7 @@ include 'includes/header.php';
                 <label>Confirm New Password</label>
                 <input type="password" name="confirm_password" class="form-control">
             </div>
-            <button type="submit" class="btn btn-primary">Change Password</button>
+                    <button type="submit" class="btn btn-primary mt-4">Change Password</button>
         </form>
     </div>
 </div>

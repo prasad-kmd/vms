@@ -130,8 +130,8 @@ include 'includes/header.php';
         <span class="invalid-feedback"><?php echo $role_err; ?></span>
     </div>
     <input type="hidden" name="id" value="<?php echo $user_id; ?>"/>
-    <input type="submit" class="btn btn-primary" value="Update User">
-    <a href="users.php" class="btn btn-secondary">Cancel</a>
+    <input type="submit" class="btn btn-primary mt-4" value="Update User">
+    <a href="users.php" class="btn btn-secondary mt-4">Cancel</a>
 </form>
 
 <?php

@@ -171,7 +171,7 @@ include 'includes/header.php';
     </table>
 
     <!-- Step 4: Submit -->
-    <div class="mt-3">
+    <div class="mt-4">
         <input type="submit" class="btn btn-success" value="Create Purchase Order" disabled>
         <a href="purchase_orders.php" class="btn btn-secondary">Cancel</a>
     </div>

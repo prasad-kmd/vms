@@ -29,7 +29,7 @@ $is_admin = isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin';
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav mx-auto">
                 <li class="nav-item <?php echo $is_active('index.php'); ?>">
                     <a class="nav-link" href="index.php">Dashboard</a>
                 </li>
@@ -42,13 +42,16 @@ $is_admin = isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin';
                 <li class="nav-item <?php echo $is_active('purchase_orders.php'); ?>">
                     <a class="nav-link" href="purchase_orders.php">Purchase Orders</a>
                 </li>
+                <li class="nav-item <?php echo $is_active('about.php'); ?>">
+                    <a class="nav-link" href="about.php">About</a>
+                </li>
                 <?php if ($is_admin): ?>
                     <li class="nav-item <?php echo $is_active('users.php'); ?>">
                         <a class="nav-link" href="users.php">Users</a>
                     </li>
                 <?php endif; ?>
             </ul>
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav">
                  <li class="nav-item">
                     <a class="nav-link" href="profile.php">
                         <i class="fas fa-user"></i> <?php echo htmlspecialchars($_SESSION["username"]); ?>

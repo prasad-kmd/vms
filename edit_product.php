@@ -163,8 +163,8 @@ include 'includes/header.php';
         <span class="invalid-feedback"><?php echo $vendor_id_err;?></span>
     </div>
     <input type="hidden" name="id" value="<?php echo $id; ?>"/>
-    <input type="submit" class="btn btn-primary" value="Submit">
-    <a href="products.php" class="btn btn-secondary">Cancel</a>
+    <input type="submit" class="btn btn-primary mt-4" value="Submit">
+    <a href="products.php" class="btn btn-secondary mt-4">Cancel</a>
 </form>
 
 <?php

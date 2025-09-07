@@ -81,33 +81,33 @@ include 'includes/header.php';
     <!-- Stats Cards -->
     <div class="row">
         <div class="col-md-3">
-            <div class="card text-white bg-primary mb-3">
+            <div class="card border-primary mb-3">
                 <div class="card-header">Total Vendors</div>
-                <div class="card-body">
+                <div class="card-body text-primary">
                     <h5 class="card-title"><?php echo $vendor_count; ?></h5>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white bg-secondary mb-3">
+            <div class="card border-secondary mb-3">
                 <div class="card-header">Total Products</div>
-                <div class="card-body">
+                <div class="card-body text-secondary">
                     <h5 class="card-title"><?php echo $product_count; ?></h5>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white bg-success mb-3">
+            <div class="card border-success mb-3">
                 <div class="card-header"><?php echo $is_admin ? 'Total Purchase Orders' : 'My Purchase Orders'; ?></div>
-                <div class="card-body">
+                <div class="card-body text-success">
                     <h5 class="card-title"><?php echo $po_count; ?></h5>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white bg-dark mb-3">
+            <div class="card border-dark mb-3">
                 <div class="card-header"><?php echo $is_admin ? 'Total PO Value' : 'My PO Value'; ?></div>
-                <div class="card-body">
+                <div class="card-body text-dark">
                     <h5 class="card-title">$<?php echo number_format($po_total_value ?? 0, 2); ?></h5>
                 </div>
             </div>
@@ -119,30 +119,32 @@ include 'includes/header.php';
         <div class="col-md-12">
             <h3>Recent Purchase Orders</h3>
             <?php if(!empty($recent_pos)): ?>
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Vendor</th>
-                            <th>Order Date</th>
-                            <th>Total Amount</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($recent_pos as $po): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($po['PurchaseOrderID']); ?></td>
-                            <td><?php echo htmlspecialchars($po['VendorName']); ?></td>
-                            <td><?php echo htmlspecialchars($po['OrderDate']); ?></td>
-                            <td>$<?php echo htmlspecialchars(number_format($po['TotalAmount'], 2)); ?></td>
-                            <td>
-                                <a href='view_purchase_order.php?id=<?php echo $po['PurchaseOrderID']; ?>' class='btn btn-info btn-sm'>View</a>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Vendor</th>
+                                <th>Order Date</th>
+                                <th>Total Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($recent_pos as $po): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($po['PurchaseOrderID']); ?></td>
+                                <td><?php echo htmlspecialchars($po['VendorName']); ?></td>
+                                <td><?php echo htmlspecialchars($po['OrderDate']); ?></td>
+                                <td>$<?php echo htmlspecialchars(number_format($po['TotalAmount'], 2)); ?></td>
+                                <td>
+                                    <a href='view_purchase_order.php?id=<?php echo $po['PurchaseOrderID']; ?>' class='btn btn-info btn-sm'>View</a>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             <?php else: ?>
                 <p class="lead"><em>No recent purchase orders found.</em></p>
             <?php endif; ?>
