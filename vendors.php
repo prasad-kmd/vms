@@ -91,9 +91,12 @@ unset($pdo);
                 <div class="col-md-12">
                     <div class="page-header clearfix mt-4">
                         <h2 class="float-left">Vendor Details</h2>
-                        <?php if(isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin'): ?>
-                        <a href="add_vendor.php" class="btn btn-success float-right">Add New Vendor</a>
-                        <?php endif; ?>
+                        <div class="float-right">
+                            <a href="export_vendors.csv.php" class="btn btn-secondary">Export to CSV</a>
+                            <?php if(isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin'): ?>
+                            <a href="add_vendor.php" class="btn btn-success ml-2">Add New Vendor</a>
+                            <?php endif; ?>
+                        </div>
                     </div>
                     <?php
                     // Display error message from session if it exists

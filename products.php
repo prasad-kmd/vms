@@ -11,22 +11,41 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 // Include config file
 require_once "config/db.php";
 
-// Attempt to select all products with their vendor names
+// Fetch vendors for the filter dropdown
+$vendors = [];
+$sql_vendors = "SELECT VendorID, Name FROM vendors ORDER BY Name ASC";
+if($stmt_vendors = $pdo->prepare($sql_vendors)){
+    if($stmt_vendors->execute()){
+        $vendors = $stmt_vendors->fetchAll(PDO::FETCH_ASSOC);
+    }
+    unset($stmt_vendors);
+}
+
+// Define variables
+$products = [];
+$selected_vendor = isset($_GET['vendor_id']) ? $_GET['vendor_id'] : '';
+
+// Base SQL query
 $sql = "SELECT p.ProductID, p.ProductName, p.Price, v.Name AS VendorName
         FROM products p
-        JOIN vendors v ON p.VendorID = v.VendorID
-        ORDER BY p.ProductName ASC";
+        JOIN vendors v ON p.VendorID = v.VendorID";
 
-$products = [];
+// Append WHERE clause if a vendor is selected
+$params = [];
+if(!empty($selected_vendor)){
+    $sql .= " WHERE p.VendorID = :vendor_id";
+    $params[':vendor_id'] = $selected_vendor;
+}
+
+$sql .= " ORDER BY p.ProductName ASC";
+
+// Attempt to execute the query
 if($stmt = $pdo->prepare($sql)){
-    if($stmt->execute()){
-        if($stmt->rowCount() > 0){
-            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
+    if($stmt->execute($params)){
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } else{
         echo "Oops! Something went wrong. Please try again later.";
     }
-    // Close statement
     unset($stmt);
 }
 // Close connection
@@ -99,6 +118,24 @@ unset($pdo);
                         <a href="add_product.php" class="btn btn-success float-right">Add New Product</a>
                         <?php endif; ?>
                     </div>
+
+                    <!-- Filter Form -->
+                    <form action="products.php" method="get" class="form-inline mb-3">
+                        <div class="form-group mr-2">
+                            <label for="vendor_id" class="mr-2">Filter by Vendor:</label>
+                            <select name="vendor_id" id="vendor_id" class="form-control">
+                                <option value="">All Vendors</option>
+                                <?php foreach ($vendors as $vendor): ?>
+                                    <option value="<?php echo $vendor['VendorID']; ?>" <?php echo ($selected_vendor == $vendor['VendorID']) ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($vendor['Name']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                        <a href="products.php" class="btn btn-secondary ml-2">Reset</a>
+                    </form>
+
                     <?php if(!empty($products)): ?>
                         <table class='table table-bordered table-striped'>
                             <thead>
@@ -108,7 +145,7 @@ unset($pdo);
                                     <th>Price</th>
                                     <th>Vendor</th>
                                      <?php if(isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin'): ?>
-                                    <th>Action</th>
+                                     <th>Action</th>
                                      <?php endif; ?>
                                 </tr>
                             </thead>
@@ -120,17 +157,17 @@ unset($pdo);
                                     <td>$<?php echo htmlspecialchars(number_format($product['Price'], 2)); ?></td>
                                     <td><?php echo htmlspecialchars($product['VendorName']); ?></td>
                                      <?php if(isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin'): ?>
-                                    <td>
-                                        <a href='edit_product.php?id=<?php echo $product['ProductID']; ?>' class='btn btn-warning btn-sm'>Edit</a>
-                                        <a href='delete_product.php?id=<?php echo $product['ProductID']; ?>' class='btn btn-danger btn-sm'>Delete</a>
-                                    </td>
+                                     <td>
+                                         <a href='edit_product.php?id=<?php echo $product['ProductID']; ?>' class='btn btn-warning btn-sm'>Edit</a>
+                                         <a href='delete_product.php?id=<?php echo $product['ProductID']; ?>' class='btn btn-danger btn-sm'>Delete</a>
+                                     </td>
                                      <?php endif; ?>
                                 </tr>
                             <?php endforeach; ?>
                             </tbody>
                         </table>
                     <?php else: ?>
-                        <p class='lead'><em>No products found. Please add one.</em></p>
+                        <p class='lead'><em>No products found.</em></p>
                     <?php endif; ?>
                 </div>
             </div>
