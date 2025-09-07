@@ -25,9 +25,11 @@ CREATE TABLE IF NOT EXISTS `products` (
 CREATE TABLE IF NOT EXISTS `purchase_orders` (
     `PurchaseOrderID` INT PRIMARY KEY AUTO_INCREMENT,
     `VendorID` INT NOT NULL,
+    `UserID` INT NULL, -- Can be NULL if the user is deleted
     `OrderDate` DATE NOT NULL,
     `TotalAmount` DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (`VendorID`) REFERENCES `vendors`(`VendorID`) ON DELETE RESTRICT
+    FOREIGN KEY (`VendorID`) REFERENCES `vendors`(`VendorID`) ON DELETE RESTRICT,
+    FOREIGN KEY (`UserID`) REFERENCES `Users`(`UserID`) ON DELETE SET NULL
 ) ENGINE=INNODB;
 
 -- Create Users table for sign-in and sign-up
@@ -40,7 +42,6 @@ CREATE TABLE IF NOT EXISTS `Users` (
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=INNODB;
 
-
 -- Create the 'purchase_order_items' table
 CREATE TABLE IF NOT EXISTS `purchase_order_items` (
     `OrderItemID` INT PRIMARY KEY AUTO_INCREMENT,
@@ -51,4 +52,3 @@ CREATE TABLE IF NOT EXISTS `purchase_order_items` (
     FOREIGN KEY (`PurchaseOrderID`) REFERENCES `purchase_orders`(`PurchaseOrderID`) ON DELETE CASCADE,
     FOREIGN KEY (`ProductID`) REFERENCES `products`(`ProductID`) ON DELETE RESTRICT
 ) ENGINE=INNODB;
-

@@ -11,14 +11,25 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 // Include config file
 require_once "config/db.php";
 
-// Attempt to select all purchase orders with their vendor names
-$sql = "SELECT po.PurchaseOrderID, po.OrderDate, po.TotalAmount, v.Name AS VendorName 
+// Base SQL query
+$sql = "SELECT po.PurchaseOrderID, po.OrderDate, po.TotalAmount, v.Name AS VendorName
         FROM purchase_orders po
-        JOIN vendors v ON po.VendorID = v.VendorID 
-        ORDER BY po.OrderDate DESC";
+        JOIN vendors v ON po.VendorID = v.VendorID";
+
+// If the user is not an admin, only show their own orders
+if($_SESSION["role"] !== 'Admin'){
+    $sql .= " WHERE po.UserID = :user_id";
+}
+
+$sql .= " ORDER BY po.OrderDate DESC";
 
 $purchase_orders = [];
 if($stmt = $pdo->prepare($sql)){
+    // Bind user_id if the user is not an admin
+    if($_SESSION["role"] !== 'Admin'){
+        $stmt->bindParam(":user_id", $_SESSION["id"], PDO::PARAM_INT);
+    }
+
     if($stmt->execute()){
         if($stmt->rowCount() > 0){
             $purchase_orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -55,7 +66,10 @@ unset($pdo);
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="index.php">Vendor Management</a>
-        <div class="collapse navbar-collapse">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">Home</a>
@@ -67,11 +81,19 @@ unset($pdo);
                     <a class="nav-link" href="products.php">Products</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="purchase_orders.php">Purchase Orders</a>
+                    <a class="nav-link" href="purchase_orders.php">Purchase Orders <span class="sr-only">(current)</span></a>
                 </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
+                <?php if(isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin'): ?>
                 <li class="nav-item">
+                    <a class="nav-link" href="users.php">User Management</a>
+                </li>
+                <?php endif; ?>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="profile.php" class="btn btn-info">My Profile</a>
+                </li>
+                <li class="nav-item ml-2">
                     <a href="logout.php" class="btn btn-danger">Sign Out</a>
                 </li>
             </ul>
@@ -106,7 +128,9 @@ unset($pdo);
                                     <td>$<?php echo htmlspecialchars(number_format($order['TotalAmount'], 2)); ?></td>
                                     <td>
                                         <a href='view_purchase_order.php?id=<?php echo $order['PurchaseOrderID']; ?>' class='btn btn-info btn-sm'>View</a>
+                                        <?php if(isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin'): ?>
                                         <a href='delete_purchase_order.php?id=<?php echo $order['PurchaseOrderID']; ?>' class='btn btn-danger btn-sm'>Delete</a>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
