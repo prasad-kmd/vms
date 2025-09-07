@@ -7,31 +7,57 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
+
+// Include config file
+require_once "config/db.php";
+
+// Attempt to select all vendors
+$sql = "SELECT * FROM vendors ORDER BY Name";
+$vendors = [];
+if($stmt = $pdo->prepare($sql)){
+    if($stmt->execute()){
+        if($stmt->rowCount() > 0){
+            $vendors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    } else{
+        echo "Oops! Something went wrong. Please try again later.";
+    }
+    // Close statement
+    unset($stmt);
+}
+// Close connection
+unset($pdo);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Vendors</title>
+    <title>Manage Vendors</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <style>
-        body{ font: 14px sans-serif; text-align: center; }
+        .wrapper{
+            width: 80%;
+            margin: 0 auto;
+        }
+        .page-header h2{
+            margin-top: 0;
+        }
+        table tr td:last-child a{
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Vendor Management</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+        <a class="navbar-brand" href="index.php">Vendor Management</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">Home</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="vendors.php">Vendors <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="vendors.php">Vendors</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="products.php">Products</a>
@@ -48,13 +74,55 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         </div>
     </nav>
 
-    <div class="container">
-        <div class="page-header" style="margin-top: 20px;">
-            <h1>Vendors</h1>
+    <div class="wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="page-header clearfix mt-4">
+                        <h2 class="float-left">Vendor Details</h2>
+                        <a href="add_vendor.php" class="btn btn-success float-right">Add New Vendor</a>
+                    </div>
+                    <?php
+                    // Display error message from session if it exists
+                    if(isset($_SESSION['error_message']) && !empty($_SESSION['error_message'])){
+                        echo '<div class="alert alert-danger mt-3">' . $_SESSION['error_message'] . '</div>';
+                        // Unset the session variable so it doesn't show again
+                        unset($_SESSION['error_message']);
+                    }
+                    ?>
+                    <?php
+                    if(!empty($vendors)): ?>
+                        <table class='table table-bordered table-striped'>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Contact Info</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach($vendors as $vendor): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($vendor['VendorID']); ?></td>
+                                    <td><?php echo htmlspecialchars($vendor['Name']); ?></td>
+                                    <td><?php echo htmlspecialchars($vendor['ContactInfo']); ?></td>
+                                    <td><?php echo htmlspecialchars($vendor['Email']); ?></td>
+                                    <td>
+                                        <a href='edit_vendor.php?id=<?php echo $vendor['VendorID']; ?>' class='btn btn-warning btn-sm'>Edit</a>
+                                        <a href='delete_vendor.php?id=<?php echo $vendor['VendorID']; ?>' class='btn btn-danger btn-sm'>Delete</a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <p class='lead'><em>No vendors found. Please add one.</em></p>
+                    <?php endif; ?>
+                </div>
+            </div>
         </div>
-        <p>
-            This page is under construction. Functionality to manage vendors will be implemented here.
-        </p>
     </div>
 
     <script src="assets/js/bootstrap.bundle.min.js"></script>
