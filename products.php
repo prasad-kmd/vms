@@ -55,7 +55,10 @@ unset($pdo);
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="index.php">Vendor Management</a>
-        <div class="collapse navbar-collapse">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">Home</a>
@@ -64,14 +67,22 @@ unset($pdo);
                     <a class="nav-link" href="vendors.php">Vendors</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="products.php">Products</a>
+                    <a class="nav-link" href="products.php">Products <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="purchase_orders.php">Purchase Orders</a>
                 </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
+                <?php if(isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin'): ?>
                 <li class="nav-item">
+                    <a class="nav-link" href="users.php">User Management</a>
+                </li>
+                <?php endif; ?>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="profile.php" class="btn btn-info">My Profile</a>
+                </li>
+                <li class="nav-item ml-2">
                     <a href="logout.php" class="btn btn-danger">Sign Out</a>
                 </li>
             </ul>
@@ -84,7 +95,9 @@ unset($pdo);
                 <div class="col-md-12">
                     <div class="page-header clearfix mt-4">
                         <h2 class="float-left">Product Details</h2>
+                        <?php if(isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin'): ?>
                         <a href="add_product.php" class="btn btn-success float-right">Add New Product</a>
+                        <?php endif; ?>
                     </div>
                     <?php if(!empty($products)): ?>
                         <table class='table table-bordered table-striped'>
@@ -94,7 +107,9 @@ unset($pdo);
                                     <th>Product Name</th>
                                     <th>Price</th>
                                     <th>Vendor</th>
+                                     <?php if(isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin'): ?>
                                     <th>Action</th>
+                                     <?php endif; ?>
                                 </tr>
                             </thead>
                             <tbody>
@@ -104,10 +119,12 @@ unset($pdo);
                                     <td><?php echo htmlspecialchars($product['ProductName']); ?></td>
                                     <td>$<?php echo htmlspecialchars(number_format($product['Price'], 2)); ?></td>
                                     <td><?php echo htmlspecialchars($product['VendorName']); ?></td>
+                                     <?php if(isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin'): ?>
                                     <td>
                                         <a href='edit_product.php?id=<?php echo $product['ProductID']; ?>' class='btn btn-warning btn-sm'>Edit</a>
                                         <a href='delete_product.php?id=<?php echo $product['ProductID']; ?>' class='btn btn-danger btn-sm'>Delete</a>
                                     </td>
+                                     <?php endif; ?>
                                 </tr>
                             <?php endforeach; ?>
                             </tbody>

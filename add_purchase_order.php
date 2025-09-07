@@ -37,14 +37,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         exit;
     }
 
+    $user_id = $_SESSION["id"]; // Get user ID from session
+
     try {
         // Start transaction
         $pdo->beginTransaction();
 
         // 1. Insert into purchase_orders table
-        $sql_order = "INSERT INTO purchase_orders (VendorID, OrderDate, TotalAmount) VALUES (:vendor_id, :order_date, :total_amount)";
+        $sql_order = "INSERT INTO purchase_orders (VendorID, UserID, OrderDate, TotalAmount) VALUES (:vendor_id, :user_id, :order_date, :total_amount)";
         $stmt_order = $pdo->prepare($sql_order);
         $stmt_order->bindParam(':vendor_id', $vendor_id, PDO::PARAM_INT);
+        $stmt_order->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt_order->bindParam(':order_date', $order_date, PDO::PARAM_STR);
         $stmt_order->bindParam(':total_amount', $total_amount, PDO::PARAM_STR); // Placeholder
         $stmt_order->execute();

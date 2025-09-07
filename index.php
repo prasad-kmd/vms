@@ -26,22 +26,30 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Vendors</a>
+                    <a class="nav-link" href="vendors.php">Vendors</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Products</a>
+                    <a class="nav-link" href="products.php">Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Purchase Orders</a>
+                    <a class="nav-link" href="purchase_orders.php">Purchase Orders</a>
                 </li>
+                <?php if(isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin'): ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="users.php">User Management</a>
+                </li>
+                <?php endif; ?>
             </ul>
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav">
                 <li class="nav-item">
+                    <a href="profile.php" class="btn btn-info">My Profile</a>
+                </li>
+                <li class="nav-item ml-2">
                     <a href="logout.php" class="btn btn-danger">Sign Out</a>
                 </li>
             </ul>

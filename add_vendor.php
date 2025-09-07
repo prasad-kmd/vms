@@ -8,6 +8,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
+// Check if the user is an admin
+if(!isset($_SESSION["role"]) || $_SESSION["role"] !== 'Admin'){
+    // Redirect to an unauthorized page or the main page
+    header("location: index.php");
+    exit;
+}
+
 // Include config file
 require_once "config/db.php";
 
