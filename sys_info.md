@@ -127,6 +127,6 @@ CREATE TABLE Users (
 )ENGINE=INNODB;
 ```
 
-I wanted to implement this system as I mentioned before with minimum number of source code files.
+I wanted to implement this system as I mentioned before with as required with considerable source code files.
 - Design a system using PHP,HTML,CSS(Bootstrap) and JS. for me i installed wampserver for local deployment.
 - also implement signin/up mechanism where users can login or register. admins also should register as a user then his role can be changed in database.
