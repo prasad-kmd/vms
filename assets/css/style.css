@@ -46,12 +46,7 @@ body {
     border-radius: 2px;
 }
 
-@media (min-width: 992px) {
-    .navbar-expand-lg .navbar-collapse {
-        display: flex !important;
-        justify-content: space-between;
-    }
-}
+/* This was breaking the mobile toggle, mx-auto on the nav should be sufficient */
 
 
 /* Login and Register page styles */
