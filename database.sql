@@ -32,6 +32,13 @@ CREATE TABLE IF NOT EXISTS `purchase_orders` (
     FOREIGN KEY (`UserID`) REFERENCES `Users`(`UserID`) ON DELETE SET NULL
 ) ENGINE=INNODB;
 
+ALTER TABLE `purchase_orders`
+ADD COLUMN `UserID` INT NULL AFTER `VendorID`,
+ADD CONSTRAINT `fk_user_id`
+  FOREIGN KEY (`UserID`)
+  REFERENCES `Users` (`UserID`)
+  ON DELETE SET NULL;
+
 -- Create Users table for sign-in and sign-up
 CREATE TABLE IF NOT EXISTS `Users` (
     `UserID` INT PRIMARY KEY AUTO_INCREMENT,
