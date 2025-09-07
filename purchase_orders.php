@@ -12,9 +12,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 require_once "config/db.php";
 
 // Attempt to select all purchase orders with their vendor names
-$sql = "SELECT po.PurchaseOrderID, po.OrderDate, po.TotalAmount, v.Name AS VendorName
+$sql = "SELECT po.PurchaseOrderID, po.OrderDate, po.TotalAmount, v.Name AS VendorName 
         FROM purchase_orders po
-        JOIN vendors v ON po.VendorID = v.VendorID
+        JOIN vendors v ON po.VendorID = v.VendorID 
         ORDER BY po.OrderDate DESC";
 
 $purchase_orders = [];
