@@ -86,52 +86,34 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Close connection
     unset($pdo);
 }
+
+$page_title = "Add Vendor";
+include 'includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add Vendor</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <style>
-        .wrapper{
-            width: 500px;
-            margin: 0 auto;
-        }
-    </style>
-</head>
-<body>
-    <div class="wrapper mt-5">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header">
-                        <h2>Add Vendor</h2>
-                    </div>
-                    <p>Please fill this form and submit to add a vendor to the database.</p>
-                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
-                            <label>Name</label>
-                            <input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
-                            <span class="help-block text-danger"><?php echo $name_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($contact_err)) ? 'has-error' : ''; ?>">
-                            <label>Contact Info</label>
-                            <input type="text" name="contact" class="form-control" value="<?php echo $contact; ?>">
-                            <span class="help-block text-danger"><?php echo $contact_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($email_err)) ? 'has-error' : ''; ?>">
-                            <label>Email</label>
-                            <input type="text" name="email" class="form-control" value="<?php echo $email; ?>">
-                            <span class="help-block text-danger"><?php echo $email_err;?></span>
-                        </div>
-                        <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="vendors.php" class="btn btn-default">Cancel</a>
-                    </form>
-                </div>
-            </div>
-        </div>
+<div class="page-header">
+    <h2>Add Vendor</h2>
+</div>
+<p>Please fill this form and submit to add a vendor to the database.</p>
+<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="name" class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $name; ?>">
+        <span class="invalid-feedback"><?php echo $name_err;?></span>
     </div>
-</body>
-</html>
+    <div class="form-group">
+        <label>Contact Info</label>
+        <input type="text" name="contact" class="form-control" value="<?php echo $contact; ?>">
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input type="text" name="email" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $email; ?>">
+        <span class="invalid-feedback"><?php echo $email_err;?></span>
+    </div>
+    <input type="submit" class="btn btn-primary" value="Submit">
+    <a href="vendors.php" class="btn btn-secondary">Cancel</a>
+</form>
+
+<?php
+include 'includes/footer.php';
+?>

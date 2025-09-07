@@ -128,60 +128,42 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         // Close statement
         unset($stmt);
         // Close connection
-        unset($pdo);
+        // unset($pdo); // This was causing issues
     }  else{
         // URL doesn't contain id parameter. Redirect to error page
         header("location: error.php");
         exit();
     }
 }
+
+$page_title = "Edit Vendor";
+include 'includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Vendor</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <style>
-        .wrapper{
-            width: 500px;
-            margin: 0 auto;
-        }
-    </style>
-</head>
-<body>
-    <div class="wrapper mt-5">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header">
-                        <h2>Edit Vendor</h2>
-                    </div>
-                    <p>Please edit the input values and submit to update the vendor.</p>
-                    <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
-                        <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
-                            <label>Name</label>
-                            <input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
-                            <span class="help-block text-danger"><?php echo $name_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($contact_err)) ? 'has-error' : ''; ?>">
-                            <label>Contact Info</label>
-                            <input type="text" name="contact" class="form-control" value="<?php echo $contact; ?>">
-                            <span class="help-block text-danger"><?php echo $contact_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($email_err)) ? 'has-error' : ''; ?>">
-                            <label>Email</label>
-                            <input type="text" name="email" class="form-control" value="<?php echo $email; ?>">
-                            <span class="help-block text-danger"><?php echo $email_err;?></span>
-                        </div>
-                        <input type="hidden" name="id" value="<?php echo $id; ?>"/>
-                        <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="vendors.php" class="btn btn-default">Cancel</a>
-                    </form>
-                </div>
-            </div>
-        </div>
+<div class="page-header">
+    <h2>Edit Vendor</h2>
+</div>
+<p>Please edit the input values and submit to update the vendor.</p>
+<form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="name" class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $name; ?>">
+        <span class="invalid-feedback"><?php echo $name_err;?></span>
     </div>
-</body>
-</html>
+    <div class="form-group">
+        <label>Contact Info</label>
+        <input type="text" name="contact" class="form-control" value="<?php echo $contact; ?>">
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input type="text" name="email" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $email; ?>">
+        <span class="invalid-feedback"><?php echo $email_err;?></span>
+    </div>
+    <input type="hidden" name="id" value="<?php echo $id; ?>"/>
+    <input type="submit" class="btn btn-primary" value="Submit">
+    <a href="vendors.php" class="btn btn-secondary">Cancel</a>
+</form>
+
+<?php
+include 'includes/footer.php';
+?>

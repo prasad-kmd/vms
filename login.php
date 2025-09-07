@@ -93,15 +93,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta charset="UTF-8">
     <title>Login</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <style>
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 360px; padding: 20px; margin: auto; margin-top: 50px; }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
-    <div class="wrapper">
-        <h2>Login</h2>
-        <p>Please fill in your credentials to login.</p>
+<body class="login-register-wrapper">
+    <div class="login-register-form">
+        <h2 class="text-center">Login</h2>
+        <p class="text-center">Please fill in your credentials to login.</p>
 
         <?php
         if(!empty($login_err)){
@@ -121,9 +118,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <span class="invalid-feedback"><?php echo $password_err; ?></span>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Login">
+                <input type="submit" class="btn btn-primary btn-block" value="Login">
             </div>
-            <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+            <p class="text-center">Don't have an account? <a href="register.php">Sign up now</a>.</p>
         </form>
     </div>
 </body>

@@ -102,44 +102,38 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 
 unset($pdo);
+
+$page_title = "Edit User";
+include 'includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit User</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <style>
-        .wrapper{ width: 500px; margin: 0 auto; }
-    </style>
-</head>
-<body>
-    <div class="wrapper mt-5">
-        <h2>Edit User: <?php echo htmlspecialchars($username); ?></h2>
-        <p>Use this form to update the user's details.</p>
-        <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" class="form-control" value="<?php echo htmlspecialchars($username); ?>" disabled>
-            </div>
-            <div class="form-group <?php echo (!empty($email_err)) ? 'has-error' : ''; ?>">
-                <label>Email</label>
-                <input type="email" name="email" class="form-control" value="<?php echo htmlspecialchars($email); ?>">
-                <span class="help-block text-danger"><?php echo $email_err; ?></span>
-            </div>
-            <div class="form-group <?php echo (!empty($role_err)) ? 'has-error' : ''; ?>">
-                <label>Role</label>
-                <select name="role" class="form-control">
-                    <option value="User" <?php echo ($role == 'User') ? 'selected' : ''; ?>>User</option>
-                    <option value="Admin" <?php echo ($role == 'Admin') ? 'selected' : ''; ?>>Admin</option>
-                </select>
-                <span class="help-block text-danger"><?php echo $role_err; ?></span>
-            </div>
-            <input type="hidden" name="id" value="<?php echo $user_id; ?>"/>
-            <input type="submit" class="btn btn-primary" value="Update User">
-            <a href="users.php" class="btn btn-secondary">Cancel</a>
-        </form>
+<div class="page-header">
+    <h2>Edit User: <?php echo htmlspecialchars($username); ?></h2>
+</div>
+<p>Use this form to update the user's details.</p>
+<form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
+    <div class="form-group">
+        <label>Username</label>
+        <input type="text" class="form-control" value="<?php echo htmlspecialchars($username); ?>" disabled>
     </div>
-</body>
-</html>
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo htmlspecialchars($email); ?>">
+        <span class="invalid-feedback"><?php echo $email_err; ?></span>
+    </div>
+    <div class="form-group">
+        <label>Role</label>
+        <select name="role" class="form-control <?php echo (!empty($role_err)) ? 'is-invalid' : ''; ?>">
+            <option value="User" <?php echo ($role == 'User') ? 'selected' : ''; ?>>User</option>
+            <option value="Admin" <?php echo ($role == 'Admin') ? 'selected' : ''; ?>>Admin</option>
+        </select>
+        <span class="invalid-feedback"><?php echo $role_err; ?></span>
+    </div>
+    <input type="hidden" name="id" value="<?php echo $user_id; ?>"/>
+    <input type="submit" class="btn btn-primary" value="Update User">
+    <a href="users.php" class="btn btn-secondary">Cancel</a>
+</form>
+
+<?php
+include 'includes/footer.php';
+?>

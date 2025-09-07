@@ -123,67 +123,50 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         // Close statement
         unset($stmt);
         // Close connection
-        unset($pdo);
+        // unset($pdo); // This was causing issues, connection is needed for the vendors query
     } else{
         // URL doesn't contain id parameter. Redirect to error page
         header("location: error.php");
         exit();
     }
 }
+
+$page_title = "Edit Product";
+include 'includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Product</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <style>
-        .wrapper{
-            width: 500px;
-            margin: 0 auto;
-        }
-    </style>
-</head>
-<body>
-    <div class="wrapper mt-5">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header">
-                        <h2>Edit Product</h2>
-                    </div>
-                    <p>Please edit the input values and submit to update the product.</p>
-                    <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
-                        <div class="form-group <?php echo (!empty($product_name_err)) ? 'has-error' : ''; ?>">
-                            <label>Product Name</label>
-                            <input type="text" name="product_name" class="form-control" value="<?php echo $product_name; ?>">
-                            <span class="help-block text-danger"><?php echo $product_name_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($price_err)) ? 'has-error' : ''; ?>">
-                            <label>Price</label>
-                            <input type="text" name="price" class="form-control" value="<?php echo $price; ?>">
-                            <span class="help-block text-danger"><?php echo $price_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($vendor_id_err)) ? 'has-error' : ''; ?>">
-                            <label>Vendor</label>
-                            <select name="vendor_id" class="form-control">
-                                <option value="">Please select</option>
-                                <?php foreach($vendors as $vendor): ?>
-                                    <option value="<?php echo $vendor['VendorID']; ?>" <?php echo ($vendor_id == $vendor['VendorID']) ? 'selected' : ''; ?>>
-                                        <?php echo htmlspecialchars($vendor['Name']); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <span class="help-block text-danger"><?php echo $vendor_id_err;?></span>
-                        </div>
-                        <input type="hidden" name="id" value="<?php echo $id; ?>"/>
-                        <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="products.php" class="btn btn-default">Cancel</a>
-                    </form>
-                </div>
-            </div>
-        </div>
+<div class="page-header">
+    <h2>Edit Product</h2>
+</div>
+<p>Please edit the input values and submit to update the product.</p>
+<form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
+    <div class="form-group">
+        <label>Product Name</label>
+        <input type="text" name="product_name" class="form-control <?php echo (!empty($product_name_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $product_name; ?>">
+        <span class="invalid-feedback"><?php echo $product_name_err;?></span>
     </div>
-</body>
-</html>
+    <div class="form-group">
+        <label>Price</label>
+        <input type="text" name="price" class="form-control <?php echo (!empty($price_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $price; ?>">
+        <span class="invalid-feedback"><?php echo $price_err;?></span>
+    </div>
+    <div class="form-group">
+        <label>Vendor</label>
+        <select name="vendor_id" class="form-control <?php echo (!empty($vendor_id_err)) ? 'is-invalid' : ''; ?>">
+            <option value="">Please select</option>
+            <?php foreach($vendors as $vendor): ?>
+                <option value="<?php echo $vendor['VendorID']; ?>" <?php echo ($vendor_id == $vendor['VendorID']) ? 'selected' : ''; ?>>
+                    <?php echo htmlspecialchars($vendor['Name']); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <span class="invalid-feedback"><?php echo $vendor_id_err;?></span>
+    </div>
+    <input type="hidden" name="id" value="<?php echo $id; ?>"/>
+    <input type="submit" class="btn btn-primary" value="Submit">
+    <a href="products.php" class="btn btn-secondary">Cancel</a>
+</form>
+
+<?php
+include 'includes/footer.php';
+?>

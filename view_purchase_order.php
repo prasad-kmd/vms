@@ -61,67 +61,57 @@ if($stmt_items = $pdo->prepare($sql_items)){
 }
 
 unset($pdo);
+
+$page_title = "View Purchase Order";
+include 'includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>View Purchase Order</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <style>
-        .wrapper{ width: 800px; margin: 0 auto; }
-    </style>
-</head>
-<body>
-    <div class="wrapper mt-5">
-        <div class="container-fluid">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="float-left">Purchase Order #<?php echo htmlspecialchars($order['PurchaseOrderID']); ?></h3>
-                    <h3 class="float-right">Date: <?php echo htmlspecialchars($order['OrderDate']); ?></h3>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Vendor Details</h5>
-                    <p class="card-text">
-                        <strong>Name:</strong> <?php echo htmlspecialchars($order['VendorName']); ?><br>
-                        <strong>Contact:</strong> <?php echo htmlspecialchars($order['ContactInfo']); ?><br>
-                        <strong>Email:</strong> <?php echo htmlspecialchars($order['Email']); ?>
-                    </p>
-                    <hr>
-                    <h5 class="card-title">Order Items</h5>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th>Unit Price</th>
-                                <th>Subtotal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach($order_items as $item): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($item['ProductName']); ?></td>
-                                    <td><?php echo htmlspecialchars($item['Quantity']); ?></td>
-                                    <td>$<?php echo htmlspecialchars(number_format($item['UnitPrice'], 2)); ?></td>
-                                    <td>$<?php echo htmlspecialchars(number_format($item['Quantity'] * $item['UnitPrice'], 2)); ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th colspan="3" class="text-right">Grand Total:</th>
-                                <th>$<?php echo htmlspecialchars(number_format($order['TotalAmount'], 2)); ?></th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <div class="card-footer">
-                     <a href="purchase_orders.php" class="btn btn-primary">Back</a>
-                </div>
-            </div>
-        </div>
+<div class="card">
+    <div class="card-header">
+        <h3 class="float-left">Purchase Order #<?php echo htmlspecialchars($order['PurchaseOrderID']); ?></h3>
+        <h3 class="float-right">Date: <?php echo htmlspecialchars($order['OrderDate']); ?></h3>
     </div>
-</body>
-</html>
+    <div class="card-body">
+        <h5 class="card-title">Vendor Details</h5>
+        <p class="card-text">
+            <strong>Name:</strong> <?php echo htmlspecialchars($order['VendorName']); ?><br>
+            <strong>Contact:</strong> <?php echo htmlspecialchars($order['ContactInfo']); ?><br>
+            <strong>Email:</strong> <?php echo htmlspecialchars($order['Email']); ?>
+        </p>
+        <hr>
+        <h5 class="card-title">Order Items</h5>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($order_items as $item): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($item['ProductName']); ?></td>
+                        <td><?php echo htmlspecialchars($item['Quantity']); ?></td>
+                        <td>$<?php echo htmlspecialchars(number_format($item['UnitPrice'], 2)); ?></td>
+                        <td>$<?php echo htmlspecialchars(number_format($item['Quantity'] * $item['UnitPrice'], 2)); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3" class="text-right">Grand Total:</th>
+                    <th>$<?php echo htmlspecialchars(number_format($order['TotalAmount'], 2)); ?></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="card-footer">
+         <a href="purchase_orders.php" class="btn btn-primary">Back</a>
+    </div>
+</div>
+
+<?php
+include 'includes/footer.php';
+?>

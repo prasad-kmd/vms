@@ -118,73 +118,66 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 
 unset($pdo);
+
+$page_title = "My Profile";
+include 'includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My Profile</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <style>
-        .wrapper{ width: 600px; margin: 0 auto; }
-    </style>
-</head>
-<body>
-    <div class="wrapper mt-5">
-        <h2>My Profile</h2>
-        <p>Manage your account details below.</p>
+<div class="page-header">
+    <h2>My Profile</h2>
+</div>
+<p>Manage your account details below.</p>
 
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="card-title">Account Information</h5>
-                <p><strong>Username:</strong> <?php echo htmlspecialchars($username); ?></p>
-                <p><strong>Role:</strong> <?php echo htmlspecialchars($role); ?></p>
-            </div>
-        </div>
-
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="card-title">Update Email</h5>
-                <?php if(!empty($email_msg)): ?>
-                    <div class="alert alert-<?php echo $email_msg_type; ?>"><?php echo $email_msg; ?></div>
-                <?php endif; ?>
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                    <input type="hidden" name="action" value="update_email">
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" name="email" class="form-control" value="<?php echo htmlspecialchars($email); ?>">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Update Email</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Change Password</h5>
-                <?php if(!empty($pwd_msg)): ?>
-                    <div class="alert alert-<?php echo $pwd_msg_type; ?>"><?php echo $pwd_msg; ?></div>
-                <?php endif; ?>
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                    <input type="hidden" name="action" value="update_password">
-                    <div class="form-group">
-                        <label>Current Password</label>
-                        <input type="password" name="current_password" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>New Password</label>
-                        <input type="password" name="new_password" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Confirm New Password</label>
-                        <input type="password" name="confirm_password" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Change Password</button>
-                </form>
-            </div>
-        </div>
-        <p class="mt-4"><a href="index.php" class="btn btn-secondary">Back to Home</a></p>
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Account Information</h5>
+        <p><strong>Username:</strong> <?php echo htmlspecialchars($username); ?></p>
+        <p><strong>Role:</strong> <?php echo htmlspecialchars($role); ?></p>
     </div>
-</body>
-</html>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Update Email</h5>
+        <?php if(!empty($email_msg)): ?>
+            <div class="alert alert-<?php echo $email_msg_type; ?>"><?php echo $email_msg; ?></div>
+        <?php endif; ?>
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <input type="hidden" name="action" value="update_email">
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" name="email" class="form-control" value="<?php echo htmlspecialchars($email); ?>">
+            </div>
+            <button type="submit" class="btn btn-primary">Update Email</button>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Change Password</h5>
+        <?php if(!empty($pwd_msg)): ?>
+            <div class="alert alert-<?php echo $pwd_msg_type; ?>"><?php echo $pwd_msg; ?></div>
+        <?php endif; ?>
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <input type="hidden" name="action" value="update_password">
+            <div class="form-group">
+                <label>Current Password</label>
+                <input type="password" name="current_password" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>New Password</label>
+                <input type="password" name="new_password" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Confirm New Password</label>
+                <input type="password" name="confirm_password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Change Password</button>
+        </form>
+    </div>
+</div>
+
+<?php
+include 'includes/footer.php';
+?>

@@ -42,108 +42,47 @@ if($stmt = $pdo->prepare($sql)){
 }
 // Close connection
 unset($pdo);
+
+$page_title = "Manage Purchase Orders";
+include 'includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Manage Purchase Orders</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <style>
-        .wrapper{
-            width: 80%;
-            margin: 0 auto;
-        }
-        .page-header h2{
-            margin-top: 0;
-        }
-        table tr td:last-child a{
-            margin-right: 5px;
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="index.php">Vendor Management</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="vendors.php">Vendors</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="products.php">Products</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="purchase_orders.php">Purchase Orders <span class="sr-only">(current)</span></a>
-                </li>
-                <?php if(isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin'): ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="users.php">User Management</a>
-                </li>
-                <?php endif; ?>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a href="profile.php" class="btn btn-info">My Profile</a>
-                </li>
-                <li class="nav-item ml-2">
-                    <a href="logout.php" class="btn btn-danger">Sign Out</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header clearfix mt-4">
-                        <h2 class="float-left">Purchase Order Details</h2>
-                        <a href="add_purchase_order.php" class="btn btn-success float-right">Add New Purchase Order</a>
-                    </div>
-                    <?php if(!empty($purchase_orders)): ?>
-                        <table class='table table-bordered table-striped'>
-                            <thead>
-                                <tr>
-                                    <th>Order ID</th>
-                                    <th>Vendor</th>
-                                    <th>Order Date</th>
-                                    <th>Total Amount</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach($purchase_orders as $order): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($order['PurchaseOrderID']); ?></td>
-                                    <td><?php echo htmlspecialchars($order['VendorName']); ?></td>
-                                    <td><?php echo htmlspecialchars($order['OrderDate']); ?></td>
-                                    <td>$<?php echo htmlspecialchars(number_format($order['TotalAmount'], 2)); ?></td>
-                                    <td>
-                                        <a href='view_purchase_order.php?id=<?php echo $order['PurchaseOrderID']; ?>' class='btn btn-info btn-sm'>View</a>
-                                        <?php if(isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin'): ?>
-                                        <a href='delete_purchase_order.php?id=<?php echo $order['PurchaseOrderID']; ?>' class='btn btn-danger btn-sm'>Delete</a>
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    <?php else: ?>
-                        <p class='lead'><em>No purchase orders found.</em></p>
+<div class="page-header clearfix">
+    <h2 class="float-left">Purchase Order Details</h2>
+    <a href="add_purchase_order.php" class="btn btn-success float-right">Add New Purchase Order</a>
+</div>
+<?php if(!empty($purchase_orders)): ?>
+    <table class='table table-bordered table-striped'>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Vendor</th>
+                <th>Order Date</th>
+                <th>Total Amount</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach($purchase_orders as $order): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($order['PurchaseOrderID']); ?></td>
+                <td><?php echo htmlspecialchars($order['VendorName']); ?></td>
+                <td><?php echo htmlspecialchars($order['OrderDate']); ?></td>
+                <td>$<?php echo htmlspecialchars(number_format($order['TotalAmount'], 2)); ?></td>
+                <td>
+                    <a href='view_purchase_order.php?id=<?php echo $order['PurchaseOrderID']; ?>' class='btn btn-info btn-sm'>View</a>
+                    <?php if(isset($_SESSION["role"]) && $_SESSION["role"] === 'Admin'): ?>
+                    <a href='delete_purchase_order.php?id=<?php echo $order['PurchaseOrderID']; ?>' class='btn btn-danger btn-sm'>Delete</a>
                     <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </div>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <p class='lead'><em>No purchase orders found.</em></p>
+<?php endif; ?>
 
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<?php
+include 'includes/footer.php';
+?>
